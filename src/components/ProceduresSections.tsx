@@ -19,19 +19,39 @@ export function ProceduresSections({ section, language }: ProceduresSectionsProp
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showApprovalQueue, setShowApprovalQueue] = useState(false);
   const [procedureData, setProcedureData] = useState(null);
+  const [ocrData, setOcrData] = useState<any>(null);
+  const [formInputMethod, setFormInputMethod] = useState<'manual' | 'ocr'>('manual');
+
+  const handleOCRDataExtracted = (data: { documentType: 'legal' | 'procedure', formData: Record<string, any> }) => {
+    console.log('🎯 [ProceduresSections] Données OCR reçues:', data);
+    
+    if (data.documentType === 'procedure') {
+      console.log('📋 [ProceduresSections] Navigation vers le formulaire de procédure avec données OCR');
+      setOcrData(data.formData);
+      setFormInputMethod('ocr');
+      setShowAddForm(true);
+    } else {
+      console.warn('⚠️ [ProceduresSections] Type de document non compatible avec les procédures');
+    }
+  };
 
   const handleAddProcedure = () => {
     console.log('Fonction handleAddProcedure appelée');
+    setFormInputMethod('manual');
     setShowAddForm(true);
   };
 
   const handleCloseForm = () => {
     setShowAddForm(false);
+    setFormInputMethod('manual');
+    setOcrData(null);
   };
 
   const handleProcedureSubmitted = (data: any) => {
     setProcedureData(data);
     setShowAddForm(false);
+    setFormInputMethod('manual');
+    setOcrData(null);
     setShowApprovalModal(true);
   };
 
@@ -133,6 +153,8 @@ export function ProceduresSections({ section, language }: ProceduresSectionsProp
       <ProcedureForm 
         onClose={handleCloseForm} 
         onSubmit={handleProcedureSubmitted}
+        initialInputMethod={formInputMethod}
+        ocrData={ocrData}
       />
     );
   }
@@ -150,6 +172,7 @@ export function ProceduresSections({ section, language }: ProceduresSectionsProp
         section={section} 
         onAddProcedure={handleAddProcedure}
         onOpenApprovalQueue={handleOpenApprovalQueue}
+        onOCRDataExtracted={handleOCRDataExtracted}
       />
       
       <ProcedureSummaryModal

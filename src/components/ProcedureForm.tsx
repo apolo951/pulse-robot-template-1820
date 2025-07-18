@@ -22,15 +22,16 @@ interface ProcedureFormProps {
   onClose: () => void;
   onSubmit: (data: any) => void;
   ocrData?: any;
+  initialInputMethod?: 'manual' | 'ocr';
 }
 
 // Ces données seront maintenant récupérées via useNomenclatureData
 
-export function ProcedureForm({ onClose, onSubmit, ocrData }: ProcedureFormProps) {
+export function ProcedureForm({ onClose, onSubmit, ocrData, initialInputMethod = 'manual' }: ProcedureFormProps) {
   const { toast } = useToast();
   const { nomenclatureData, mapOCRDataToForm } = useNomenclatureData();
   const { forms: customForms } = useFormLibraryStore();
-  const [inputMethod, setInputMethod] = useState<'manual' | 'ocr'>('manual');
+  const [inputMethod, setInputMethod] = useState<'manual' | 'ocr'>(initialInputMethod);
   const [showOCRScanner, setShowOCRScanner] = useState(false);
 
   // Filtrer les formulaires de la bibliothèque pour les procédures administratives
@@ -83,7 +84,7 @@ export function ProcedureForm({ onClose, onSubmit, ocrData }: ProcedureFormProps
   useEffect(() => {
     if (ocrData) {
       console.log('🎯 [ProcedureForm] Traitement des données OCR reçues:', ocrData);
-      handleOCRFormDataExtracted(ocrData);
+      handleOCRFormDataExtracted({ documentType: 'procedure', formData: ocrData });
       setInputMethod('manual'); // Switch to manual mode to show filled form
     }
   }, [ocrData]);
