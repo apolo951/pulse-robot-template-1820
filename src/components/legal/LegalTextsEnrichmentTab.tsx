@@ -27,6 +27,7 @@ export function LegalTextsEnrichmentTab({ onAddLegalText, onOCRTextExtracted, on
   };
 
   const handleScanOCRClick = () => {
+    console.log('🎯 [LegalTextsEnrichmentTab] Clic sur Scanner OCR');
     setShowOCRScanner(true);
   };
 
@@ -88,6 +89,7 @@ export function LegalTextsEnrichmentTab({ onAddLegalText, onOCRTextExtracted, on
   };
 
   if (showOCRScanner) {
+    console.log('🎯 [LegalTextsEnrichmentTab] Affichage du scanner OCR');
     return (
       <SmartOCRProcessor
         title="Scanner un document juridique"

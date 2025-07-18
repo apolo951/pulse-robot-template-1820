@@ -19,12 +19,15 @@ export function LegalTextsSections({ section, language }: LegalTextsSectionsProp
 
   const handleOCRDataExtracted = (data: { documentType: 'legal' | 'procedure', formData: Record<string, any> }) => {
     console.log('🎯 [LegalTextsSections] Données OCR reçues:', data);
+    console.log('📋 [LegalTextsSections] Type de document:', data.documentType);
+    console.log('📋 [LegalTextsSections] Données formulaire:', Object.keys(data.formData));
     
     if (data.documentType === 'legal') {
       console.log('📋 [LegalTextsSections] Navigation vers le formulaire de texte juridique avec données OCR');
       setOcrData(data.formData);
       setFormInputMethod('ocr');
       setShowAddForm(true);
+      console.log('✅ [LegalTextsSections] Formulaire ouvert avec données OCR');
     } else {
       console.warn('⚠️ [LegalTextsSections] Type de document non compatible avec les textes juridiques');
     }
