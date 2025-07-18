@@ -38,7 +38,6 @@ const Index = () => {
 
   // Navigation with browser history
   const handleSectionChange = useCallback((newSection: string) => {
-    console.log('Attempting to navigate to section:', newSection);
     if (VALID_SECTIONS.has(newSection)) {
       setActiveSection(newSection);
       if (newSection === "dashboard") {
@@ -46,15 +45,14 @@ const Index = () => {
       } else {
         navigate(`/${newSection}`, { replace: false });
       }
-      console.log('Successfully navigated to section:', newSection);
     } else {
-      console.warn(`Section invalide tentée: ${newSection}`);
+      // Log only critical navigation errors
+      console.error(`Invalid section attempted: ${newSection}`);
     }
   }, [navigate]);
 
   useEffect(() => {
     const handleNavigateToSection = (event: CustomEvent) => {
-      console.log('Navigation event received:', event.detail);
       const targetSection = event.detail;
       
       if (typeof targetSection === 'string' && VALID_SECTIONS.has(targetSection)) {
@@ -75,7 +73,7 @@ const Index = () => {
           }
         }, 1000);
       } else {
-        console.warn(`Section invalide reçue via événement: ${targetSection}`);
+        console.error(`Invalid section received via event: ${targetSection}`);
       }
     };
 

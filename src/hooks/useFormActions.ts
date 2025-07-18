@@ -1,8 +1,6 @@
 
 export function useFormActions() {
   const handleAddLegalText = () => {
-    console.log('Ouverture formulaire texte juridique');
-    
     // Toast d'information
     const toastEvent = new CustomEvent('show-toast', {
       detail: {
@@ -20,8 +18,6 @@ export function useFormActions() {
   };
 
   const handleAddProcedure = () => {
-    console.log('Ouverture formulaire procédure');
-    
     // Toast d'information
     const toastEvent = new CustomEvent('show-toast', {
       detail: {
@@ -39,7 +35,6 @@ export function useFormActions() {
   };
 
   const handleAddNews = () => {
-    console.log('Ouverture formulaire actualité');
     const event = new CustomEvent('open-add-form', {
       detail: { type: 'news' }
     });
@@ -47,8 +42,6 @@ export function useFormActions() {
   };
 
   const handleAddLibraryResource = (resourceType: 'ouvrage' | 'revue' | 'journal' | 'article' | 'video' | 'directory') => {
-    console.log('Ouverture formulaire ressource:', resourceType);
-    
     const event = new CustomEvent('open-library-form', {
       detail: { resourceType }
     });
