@@ -40,8 +40,12 @@ export function LegalTextsEnrichmentTab({ onAddLegalText, onOCRTextExtracted, on
       console.log('📤 [LegalTextsEnrichmentTab] Transmission des données au parent...');
       if (onOCRDataExtracted) {
         onOCRDataExtracted(data);
+        console.log('✅ [LegalTextsEnrichmentTab] Données transmises avec succès');
+      } else {
+        console.warn('⚠️ [LegalTextsEnrichmentTab] Pas de callback onOCRDataExtracted défini');
+        // Fallback: déclencher l'ouverture du formulaire manuel
+        onAddLegalText();
       }
-      console.log('✅ [LegalTextsEnrichmentTab] Données transmises avec succès');
     } catch (error) {
       console.error('❌ [LegalTextsEnrichmentTab] Erreur lors de la transmission:', error);
     }

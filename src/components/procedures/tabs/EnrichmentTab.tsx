@@ -29,17 +29,29 @@ export function EnrichmentTab({ onAddProcedure, onOCRTextExtracted, onOCRDataExt
 
   const handleSmartOCRDataExtracted = (data: { documentType: 'legal' | 'procedure', formData: Record<string, any> }) => {
     console.log('🎯 [EnrichmentTab] Données OCR extraites:', data);
+    console.log('📋 [EnrichmentTab] Type de document:', data.documentType);
+    console.log('📋 [EnrichmentTab] Nombre de champs:', Object.keys(data.formData).length);
     
-    // Fermer le scanner
-    setShowOCRScanner(false);
-    
-    // Déclencher directement l'ouverture du formulaire avec les données OCR
-    if (onOCRDataExtracted) {
-      onOCRDataExtracted(data);
-    } else {
-      // Fallback: déclencher l'ouverture du formulaire
-      onAddProcedure();
+    // Passer les données au parent AVANT de fermer le scanner
+    try {
+      console.log('📤 [EnrichmentTab] Transmission des données au parent...');
+      if (onOCRDataExtracted) {
+        onOCRDataExtracted(data);
+        console.log('✅ [EnrichmentTab] Données transmises avec succès');
+      } else {
+        console.warn('⚠️ [EnrichmentTab] Pas de callback onOCRDataExtracted défini');
+        // Fallback: déclencher l'ouverture du formulaire manuel
+        onAddProcedure();
+      }
+    } catch (error) {
+      console.error('❌ [EnrichmentTab] Erreur lors de la transmission:', error);
     }
+    
+    // Fermer le scanner après transmission
+    setTimeout(() => {
+      console.log('🔒 [EnrichmentTab] Fermeture du scanner');
+      setShowOCRScanner(false);
+    }, 100);
   };
 
   const handleScanOCRClick = () => {
